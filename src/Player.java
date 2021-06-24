@@ -7,6 +7,15 @@ import java.awt.*;
 
 public class Player {
 
+	private double cx;
+	private double cy;
+	private double width;
+	private double height;
+	private Color color;
+	private String id;
+	private double [] v_limit;
+	private double speed;
+
 	/**
 		Construtor da classe Player.
 
@@ -21,7 +30,14 @@ public class Player {
 	*/
 
 	public Player(double cx, double cy, double width, double height, Color color, String id, double [] v_limit, double speed){
-	
+		this.cx = cx;
+		this.cy = cy;
+		this.width = width;
+		this.height = height;
+		this.color = color;
+		this.id = id;
+		this.v_limit = v_limit;
+		this.speed = speed;
 	}
 
 	/**
@@ -29,9 +45,8 @@ public class Player {
 	*/
 
 	public void draw(){
-
-		GameLib.setColor(Color.GREEN);
-		GameLib.fillRect(80, 300, 20, 100);
+		GameLib.setColor(color);
+		GameLib.fillRect(this.getCx(), this.getCy(), this.getWidth(), this.getHeight());
 	}
 
 	/**
@@ -43,7 +58,9 @@ public class Player {
 	*/
 
 	public void moveUp(long delta){
-
+		// Move o player caso não exceda o limite vertical
+		// contando com a própria altura
+		if ((this.getCy() - this.getHeight()/2) >= v_limit[0]) this.cy--;
 	}
 
 	/**
@@ -55,17 +72,16 @@ public class Player {
 	*/
 
 	public void moveDown(long delta){
-
+		if ((this.getCy() + this.getHeight()/2) <= v_limit[1]) this.cy++;
 	}
 
 	/**
 		Método que devolve a string de identificação do player.
-		@return a String de indentificação.
+		@return a String de identificação.
 	*/
 
 	public String getId() { 
-
-		return ""; 
+		return id; 
 	}
 
 	/**
@@ -74,18 +90,16 @@ public class Player {
 	*/
 
 	public double getWidth() { 
-
-		return 20; 
+		return width; 
 	}
 
 	/**
-		Método que devolve a algura do retangulo que representa o player.
+		Método que devolve a largura do retangulo que representa o player.
 		@return um double com o valor da altura.
 	*/
 
 	public double getHeight() { 
-
-		return 100;
+		return height;
 	}
 
 	/**
@@ -94,8 +108,7 @@ public class Player {
 	*/
 
 	public double getCx() { 
-		
-		return 80;
+		return cx;
 	}
 
 	/**
@@ -104,8 +117,7 @@ public class Player {
 	*/
 
 	public double getCy() { 
-	
-		return 300;
+		return cy;
 	}
 }
 
