@@ -58,9 +58,8 @@ public class Player {
 	*/
 
 	public void moveUp(long delta){
-		// Move o player caso não exceda o limite vertical
-		// contando com a própria altura
-		if ((this.getCy() - this.getHeight()/2) >= v_limit[0]) this.cy--;
+		// Move o player caso não exceda o limite vertical, contando com a própria altura
+		if ((this.getCy() - this.getHeight()/2) >= v_limit[0]) this.cy -= speed * delta;
 	}
 
 	/**
@@ -72,7 +71,7 @@ public class Player {
 	*/
 
 	public void moveDown(long delta){
-		if ((this.getCy() + this.getHeight()/2) <= v_limit[1]) this.cy++;
+		if ((this.getCy() + this.getHeight()/2) <= v_limit[1]) this.cy += speed * delta;
 	}
 
 	/**
