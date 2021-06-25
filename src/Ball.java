@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Random;
 
 /**
 	Esta classe representa a bola usada no jogo. A classe princial do jogo (Pong)
@@ -6,6 +7,17 @@ import java.awt.*;
 */
 
 public class Ball {
+
+	private double cx;
+	private double cy;
+	private double width;
+	private double height;
+	private Color color;
+	private double speed;
+
+	// Direções a serem geradas no construtor
+	private double xDirection;
+	private double yDirection;
 
 	/**
 		Construtor da classe Ball. Observe que quem invoca o construtor desta classe define a velocidade da bola 
@@ -21,7 +33,22 @@ public class Ball {
 	*/
 
 	public Ball(double cx, double cy, double width, double height, Color color, double speed){
-	
+		this.cx = cx;
+		this.cy = cy;
+		this.width = width;
+		this.height = height;
+		this.color = color;
+		this.speed = speed;
+
+		// Gera direções aleatórias
+
+		Random random = new Random();
+
+		this.xDirection = random.nextInt(1);
+		if (this.xDirection == 0) this.xDirection = -1;
+
+		this.yDirection = random.nextInt(1);
+		if (this.yDirection == 0) this.yDirection = -1;
 	}
 
 
@@ -30,9 +57,8 @@ public class Ball {
 	*/
 
 	public void draw(){
-
-		GameLib.setColor(Color.YELLOW);
-		GameLib.fillRect(400, 300, 20, 20);
+		GameLib.setColor(color);
+		GameLib.fillRect(this.getCx(), this.getCy(), width, height);
 	}
 
 	/**
@@ -42,7 +68,8 @@ public class Ball {
 	*/
 
 	public void update(long delta){
-
+		this.cx += xDirection * delta;
+		this.cy += yDirection * delta;
 	}
 
 	/**
@@ -52,7 +79,7 @@ public class Ball {
 	*/
 
 	public void onPlayerCollision(String playerId){
-
+		this.xDirection = -this.xDirection;
 	}
 
 	/**
@@ -62,7 +89,16 @@ public class Ball {
 	*/
 
 	public void onWallCollision(String wallId){
-
+		switch (wallId) {
+			case "Left":
+			case "Right":
+				this.xDirection = -this.xDirection;
+			break;
+			case "Top":
+			case "Bottom":
+				this.yDirection = -this.yDirection;
+			break;
+		}
 	}
 
 	/**
@@ -73,7 +109,21 @@ public class Ball {
 	*/
 	
 	public boolean checkCollision(Wall wall){
-
+		String wallId = wall.getId();
+		switch (wallId) {
+			case "Left":
+				if (this.getCx() <= wall.getCx()) return true;
+			break;
+			case "Right":
+				if (this.getCx() >= wall.getCx()) return true;
+			break;
+			case "Top":
+				if (this.getCy() <= wall.getCy()) return true;
+			break;
+			case "Bottom":
+				if (this.getCy() >= wall.getCy()) return true;
+			break;
+		}
 		return false;
 	}
 
@@ -86,6 +136,19 @@ public class Ball {
 
 	public boolean checkCollision(Player player){
 
+		// A bola precisa colidir entre o limite superior e inferior do player (equivalente a sua altura)
+		double topLimit = player.getCy() + player.getHeight()/2;
+		double bottomLimit = player.getCy() - player.getHeight()/2;
+
+		String playerId = player.getId();
+		switch (playerId) {
+			case "Player 1":
+				if (this.getCx() <= player.getCx() && this.getCy() <= topLimit && this.getCy() >= bottomLimit) return true;
+			break;
+			case "Player 2":
+				if (this.getCx() >= player.getCx() && this.getCy() <= topLimit && this.getCy() >= bottomLimit) return true;
+			break;
+		}
 		return false;
 	}
 
@@ -95,8 +158,7 @@ public class Ball {
 	*/
 	
 	public double getCx(){
-
-		return 400;
+		return cx;
 	}
 
 	/**
@@ -105,8 +167,7 @@ public class Ball {
 	*/
 
 	public double getCy(){
-
-		return 300;
+		return cy;
 	}
 
 	/**
@@ -116,8 +177,7 @@ public class Ball {
 	*/
 
 	public double getSpeed(){
-
-		return 0;
+		return speed;
 	}
 
 }
