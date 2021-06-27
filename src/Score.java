@@ -8,6 +8,9 @@ import java.awt.*;
 
 public class Score {
 
+	private int score = 0;
+	private String playerId;
+
 	/**
 		Construtor da classe Score.
 
@@ -15,7 +18,7 @@ public class Score {
 	*/
 
 	public Score(String playerId){
-
+		this.playerId = playerId;
 	}
 
 	/**
@@ -23,8 +26,14 @@ public class Score {
 	*/
 
 	public void draw(){
-
-		GameLib.drawText("placar?", 70, GameLib.ALIGN_LEFT);			
+		int align = 0;
+		Color color = Color.GREEN;
+		if (playerId == "Player 2") {
+			align = 1;
+			color = Color.BLUE;
+		}
+		GameLib.setColor(color);
+		GameLib.drawText(playerId + ": " + this.getScore(), 70, align);			
 	}
 
 	/**
@@ -32,7 +41,7 @@ public class Score {
 	*/
 
 	public void inc(){
-
+		this.score++;
 	}
 
 	/**
@@ -42,7 +51,6 @@ public class Score {
 	*/
 
 	public int getScore(){
-
-		return 0;
+		return score;
 	}
 }
