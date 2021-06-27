@@ -68,8 +68,8 @@ public class Ball {
 	*/
 
 	public void update(long delta){
-		this.cx += xDirection * delta;
-		this.cy += yDirection * delta;
+		this.cx += xDirection * delta * this.getSpeed();
+		this.cy += yDirection * delta * this.getSpeed();
 	}
 
 	/**
